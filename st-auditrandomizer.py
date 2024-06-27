@@ -5,8 +5,13 @@ import time
 st.markdown("""
     <style>
     .big-label {
-        font-size: 20px;
+        font-size: 22px;
         font-weight: bold;
+    }
+    .sample-output {
+        font-family: 'Courier New', Courier;
+        font-size: 1em;
+        color: #4CAF50;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -22,13 +27,14 @@ with col1: #place them in columns here
 with col2:
     st.markdown('<div class="big-label">Copy Ids from Airtable then click Generate:</div>', unsafe_allow_html=True)
     text = st.text_area(
-    label='Hidden Label',  # Provide a non-empty label
+        label='Hidden Label',  # Provide a non-empty label
         label_visibility='collapsed',  # Hide the label
-    height=200,  # Fixed height 
-    help="Paste the audit IDs you'd like to choose from."
-)        
+        height=200,  # Fixed height 
+        help="Paste the audit IDs you'd like to choose from."
+    )        
 
-    # generate button here
+# generate button here
+with col2:
     if st.button("Generate"):
     # this line will split the IDs and strip any extra whitespace
         items = [item.strip() for item in text.split('\n') if item.strip()]
@@ -38,28 +44,20 @@ with col2:
         else:
             # select 5 items randomly from the list
             random_selection = random.sample(items, 5)
+            st.session_state['random_selection'] = random_selection  # Save to session state
 
-        # Progress bar here
+            # Progress bar here
             progress_text = "Hang on..."
             my_bar = st.progress(0, text=progress_text)
 
             for percent_complete in range(100):
                 time.sleep(0.01)
                 my_bar.progress(percent_complete + 1, text=progress_text)
-            time.sleep(1)
             my_bar.empty() 
-        # show results here
-            with col2:
-                st.markdown("### Here you go:")
-                st.write("""
-                <style>
-                .sample-output {
-                    font-family: 'Courier New', Courier, monospace;
-                    font-size: 1em;
-                    color: #4CAF50;
-                }
-                </style>
-                """, unsafe_allow_html=True)
 
-                for i, item in enumerate(random_selection, 1):
-                    st.markdown(f'<div class="sample-output">{i}: {item}</div>', unsafe_allow_html=True)
+# show results here
+if 'random_selection' in st.session_state:
+    with col2:
+        st.markdown("### Here you go:")
+        for i, item in enumerate(st.session_state['random_selection'], 1):
+            st.markdown(f'<div class="sample-output">{i}: {item}</div>', unsafe_allow_html=True)
