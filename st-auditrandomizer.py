@@ -19,9 +19,11 @@ st.markdown("""
 col1, col2 = st.columns([4,4]) # make them as columns
 
 with col1: #place them in columns here
-    st.header(" Random Sample Generator ", divider='rainbow')
+    st.header(" CE Ticket Randomizer ", divider='rainbow')
     with st.expander("Click here for more info"):
-        st.write("Our Random Sample Generator gives you 5 hand-picked items from your list in seconds.  Skip the ad-infested randomizer websites and unreliable chatbots! ")
+        st.write("Our Random Sample Generator provides you with 5 hand-picked items from your list in seconds.
+                 This tool ensures that your samples are completely random. Ideal for quality assurance and data analysis,
+                 our generator allows you to confidently rely on the integrity of your sample data, making your decision-making process more efficient and accurate." ")
 
 # input from users, usually bulk data copied from Airtable
 with col2:
@@ -58,6 +60,6 @@ with col2:
 # show results here
 if 'random_selection' in st.session_state:
     with col2:
-        st.markdown("### Here you go:")
+        st.markdown("### Here are the tickets for your today's audit:")
         for i, item in enumerate(st.session_state['random_selection'], 1):
             st.markdown(f'<div class="sample-output">{i}: {item}</div>', unsafe_allow_html=True)
